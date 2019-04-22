@@ -1,0 +1,20 @@
+{
+    "name": "romach/rpikabufeed_bot",
+    "type": "project",
+    "authors": [
+        {
+            "name": "romach",
+            "email": "romach3@gmail.com"
+        }
+    ],
+    "require": {
+        "irazasyed/telegram-bot-sdk": "^2.0",
+        "vlucas/phpdotenv": "^3.3",
+        "hellogerard/jobby": "^3.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    }
+}
