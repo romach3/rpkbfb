@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Worker;
+namespace App\Bot\Commands;
 
 class ClearCache
 {

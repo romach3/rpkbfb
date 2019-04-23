@@ -1,25 +1,20 @@
 <?php
 
-namespace App\Worker;
+namespace App\Bot\Commands;
 
-use GuzzleHttp\Client;
-use Telegram\Bot\Api;
+use App\Bot\Services\TelegramService;
 use Telegram\Bot\Exceptions\TelegramSDKException;
-use Telegram\Bot\HttpClients\GuzzleHttpClient;
 
 class SendMessagesToTelegram
 {
-    protected $api;
+    protected $telegramService;
+    protected $config;
 
-    public function __construct()
+
+    public function __construct(TelegramService $telegramService, array $config)
     {
-        try {
-            $client = new Client(['proxy' => getenv('GUZZLE_CLIENT_PROXY') ?? null]);
-            $httpClient = new GuzzleHttpClient($client);
-            $this->api = new Api(getenv('BOT_TOKEN'), false, $httpClient);
-        } catch (TelegramSDKException $e) {
-            /* @todo log */
-        }
+        $this->telegramService = $telegramService;
+        $this->config = $config;
     }
 
     public function handle(): void
@@ -36,8 +31,7 @@ class SendMessagesToTelegram
                     echo $exception->getMessage() . PHP_EOL;
                     /* @todo log */
                     /* Ошибка возникает, при отправке слишком больших сообщений */
-                    $this->api->sendMessage([
-                        'chat_id' => '@rpikabufeed_nsfw',
+                    $this->telegramService->sendMessage($message, [
                         'parse_mode' => 'Markdown',
                         'disable_web_page_preview' => true,
                         'text' => "*{$message['title']}*" . PHP_EOL . PHP_EOL
@@ -49,7 +43,7 @@ class SendMessagesToTelegram
                 $this->saveId($message);
                 $counter++;
             }
-            if ($counter >= 25) {
+            if ($counter >= 15) {
                 break;
             }
         }
@@ -72,15 +66,14 @@ class SendMessagesToTelegram
             $ids = json_decode(file_get_contents('./storage/sended.json'), true);
         }
         $ids[] = $message['id'];
-        $ids = array_slice($ids, -200);
+        $ids = array_slice($ids, -1 * $this->config['sendedListSize']);
         file_put_contents('./storage/sended.json', json_encode($ids));
     }
 
     protected function send(array $message): void
     {
         if ($message['hint'] === 'self') {
-            $this->api->sendMessage([
-                'chat_id' => '@rpikabufeed_nsfw',
+            $this->telegramService->sendMessage($message, [
                 'parse_mode' => 'Markdown',
                 'disable_web_page_preview' => true,
                 'text' => "*{$message['title']}*" . PHP_EOL . PHP_EOL
@@ -88,8 +81,7 @@ class SendMessagesToTelegram
                     . $this->getMessageStatus($message)
             ]);
         } else if ($message['hint'] === 'image') {
-            $this->api->sendPhoto([
-                'chat_id' => '@rpikabufeed_nsfw',
+            $this->telegramService->sendPhoto($message, [
                 'photo' => $message['url'],
                 'parse_mode' => 'Markdown',
                 'caption' => "*{$message['title']}*" . PHP_EOL . PHP_EOL
@@ -97,8 +89,7 @@ class SendMessagesToTelegram
             ]);
         } else if ($message['hint'] === 'hosted:video') {
             if ($message['url'] !== null) {
-                $this->api->sendVideo([
-                    'chat_id' => '@rpikabufeed_nsfw',
+                $this->telegramService->sendVideo($message, [
                     'photo' => $message['thumbnail'],
                     'parse_mode' => 'Markdown',
                     'video' => $message['url'],
@@ -106,8 +97,7 @@ class SendMessagesToTelegram
                         . $this->getMessageStatus($message)
                 ]);
             } else {
-                $this->api->sendPhoto([
-                    'chat_id' => '@rpikabufeed_nsfw',
+                $this->telegramService->sendPhoto($message, [
                     'photo' => $message['thumbnail'],
                     'parse_mode' => 'Markdown',
                     'caption' => "*{$message['title']}*" . PHP_EOL . PHP_EOL
@@ -116,8 +106,7 @@ class SendMessagesToTelegram
                 ]);
             }
         } else if ($message['hint'] === 'gif:video') {
-            $this->api->sendVideo([
-                'chat_id' => '@rpikabufeed_nsfw',
+            $this->telegramService->sendVideo($message, [
                 'photo' => $message['thumbnail'],
                 'parse_mode' => 'Markdown',
                 'video' => $message['url'],
@@ -125,8 +114,7 @@ class SendMessagesToTelegram
                     . $this->getMessageStatus($message)
             ]);
         } else if ($message['hint'] === 'rich:video') {
-            $this->api->sendPhoto([
-                'chat_id' => '@rpikabufeed_nsfw',
+            $this->telegramService->sendPhoto($message, [
                 'photo' => $message['thumbnail'],
                 'parse_mode' => 'Markdown',
                 'caption' => "*{$message['title']}*" . PHP_EOL . PHP_EOL

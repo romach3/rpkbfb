@@ -1,10 +1,7 @@
 <?php
 require_once 'vendor/autoload.php';
 
-use App\Worker\ClearCache;
-use App\Worker\GetPostsFromReddit;
-use App\Worker\PrepareMessagesToSend;
-use App\Worker\SendMessagesToTelegram;
+use App\Bot\Bot;
 use Dotenv\Dotenv;
 use Jobby\Jobby;
 
@@ -16,10 +13,7 @@ $jobby = new Jobby();
 try {
     $jobby->add('LoadNewPostsFromReddit', [
         'closure' => function () {
-            (new GetPostsFromReddit())->handle();
-            (new PrepareMessagesToSend())->handle();
-            (new SendMessagesToTelegram())->handle();
-            (new ClearCache())->handle();
+            (new Bot())->run();
 
             return true;
         },
