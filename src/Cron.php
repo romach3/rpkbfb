@@ -8,7 +8,7 @@ use App\Worker\SendMessagesToTelegram;
 use Dotenv\Dotenv;
 use Jobby\Jobby;
 
-$dotenv = Dotenv::create(__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR);
+$dotenv = Dotenv::create(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR);
 $dotenv->load();
 
 $jobby = new Jobby();
@@ -20,9 +20,11 @@ try {
             (new PrepareMessagesToSend())->handle();
             (new SendMessagesToTelegram())->handle();
             (new ClearCache())->handle();
+
+            return true;
         },
         'schedule' => '*/5 * * * *',
-        'output'   => 'storage/LoadNewPostsFromReddit.log',
+        'output' => 'storage/LoadNewPostsFromReddit.log',
     ]);
     $jobby->run();
 } catch (\Jobby\Exception $e) {
