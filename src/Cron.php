@@ -24,6 +24,7 @@ try {
         'schedule' => '*/5 * * * *',
         'output'   => 'storage/LoadNewPostsFromReddit.log',
     ]);
+    $jobby->run();
 } catch (\Jobby\Exception $e) {
-
+    echo $e->getMessage();
 }
