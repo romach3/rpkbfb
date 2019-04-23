@@ -24,7 +24,6 @@ class TelegramService
         }
     }
 
-
     public function sendMessage(array $original, array $prepared, $disableNotification = null): void
     {
         $this->prepareToSend($original, $prepared, $disableNotification, function ($prepared) {
