@@ -9,8 +9,8 @@ class LongTextFilter extends AbstractFilter
 
     public function transform(array $message, array $item): array
     {
-        if (mb_strlen($message['text']) >= 4096) {
-            $message['text'] = mb_substr($message['text'], 0, 3072).'...';
+        if (mb_strlen($message['text']) >= 2048) {
+            $message['text'] = mb_substr($message['text'], 0, 1536).'...';
             $message['text'] .= PHP_EOL . PHP_EOL . '* продолжение на r/Pikabu *';
         }
         $message['text'] = str_replace("\n&amp;#x200B;\n", '', $message['text']);
