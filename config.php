@@ -3,14 +3,11 @@
 return [
     'channels' => [
         [
-            'name' => '@rpikabufeed_nsfw',
+            'name' => '@rpikabufeed_sb',
             'nsfw' => true,
-        ],
-        [
-            'name' => '@rpikabufeed',
-            'nsfw' => false,
         ]
     ],
-    'sendedListSize' => 300,
-    'disableNotification' => true
+    'sendedListSize' => 400,
+    'disableNotification' => true,
+    'maxMessagesOnSession' => 15
 ];

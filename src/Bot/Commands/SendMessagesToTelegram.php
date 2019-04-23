@@ -43,7 +43,7 @@ class SendMessagesToTelegram
                 $this->saveId($message);
                 $counter++;
             }
-            if ($counter >= 5) {
+            if ($counter >= $this->config['maxMessagesOnSession']) {
                 break;
             }
         }
