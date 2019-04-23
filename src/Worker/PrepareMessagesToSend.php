@@ -29,7 +29,7 @@ class PrepareMessagesToSend
                 'nsfw' => $item['data']['over_18']
             ];
             if (mb_strlen($message['text']) >= 4096) {
-                $message['text'] = mb_substr($message['text'], 0, 4000);
+                $message['text'] = mb_substr($message['text'], 0, 3072);
                 $message['text'] .= PHP_EOL . PHP_EOL . '* продолжение на r/Pikabu *' . PHP_EOL;
             }
             if ($message['thumbnail'] === 'nsfw' && $message['hint'] === 'image') {

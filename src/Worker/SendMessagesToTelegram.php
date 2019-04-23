@@ -83,8 +83,8 @@ class SendMessagesToTelegram
                 'chat_id' => '@rpikabufeed_nsfw',
                 'parse_mode' => 'Markdown',
                 'disable_web_page_preview' => true,
-                'text' => "*{$message['title']}*" . PHP_EOL
-                    . $message['text'] . PHP_EOL
+                'text' => "*{$message['title']}*" . PHP_EOL . PHP_EOL
+                    . $message['text'] . PHP_EOL . PHP_EOL
                     . $this->getMessageStatus($message)
             ]);
         } else if ($message['hint'] === 'image') {
