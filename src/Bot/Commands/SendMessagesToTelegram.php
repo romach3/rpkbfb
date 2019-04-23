@@ -43,7 +43,7 @@ class SendMessagesToTelegram
                 $this->saveId($message);
                 $counter++;
             }
-            if ($counter >= 15) {
+            if ($counter >= 5) {
                 break;
             }
         }

@@ -25,27 +25,33 @@ class TelegramService
     }
 
 
-    public function sendMessage(array $original, array $prepared): void
+    public function sendMessage(array $original, array $prepared, $disableNotification = null): void
     {
-        foreach ($this->getMessageChannels($original) as $channel) {
-            $prepared['chat_id'] = $channel;
+        $this->prepareToSend($original, $prepared, $disableNotification, function ($prepared) {
             $this->api->sendMessage($prepared);
-        }
+        });
     }
 
-    public function sendPhoto(array $original, array $prepared): void
+    public function sendPhoto(array $original, array $prepared, $disableNotification = null): void
     {
-        foreach ($this->getMessageChannels($original) as $channel) {
-            $prepared['chat_id'] = $channel;
+        $this->prepareToSend($original, $prepared, $disableNotification, function ($prepared) {
             $this->api->sendPhoto($prepared);
-        }
+        });
     }
 
-    public function sendVideo(array $original, array $prepared): void
+    public function sendVideo(array $original, array $prepared, $disableNotification = null): void
+    {
+        $this->prepareToSend($original, $prepared, $disableNotification, function ($prepared) {
+            $this->api->sendVideo($prepared);
+        });
+    }
+
+    protected function prepareToSend(array $original, array $prepared, ?bool $disableNotification, callable $callback): void
     {
         foreach ($this->getMessageChannels($original) as $channel) {
             $prepared['chat_id'] = $channel;
-            $this->api->sendVideo($prepared);
+            $prepared['disable_notification'] = $disableNotification ?? $this->config['disableNotification'];
+            $callback($prepared);
         }
     }
 

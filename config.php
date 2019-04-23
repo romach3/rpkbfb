@@ -12,4 +12,5 @@ return [
         ]
     ],
     'sendedListSize' => 300,
+    'disableNotification' => true
 ];
