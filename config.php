@@ -3,11 +3,19 @@
 return [
     'channels' => [
         [
-            'name' => '@rpikabufeed_sb',
+            'name' => '@rpikabufeed_nsfw',
             'nsfw' => true,
+        ],
+        [
+            'name' => '@rpikabufeed',
+            'nsfw' => false,
         ]
     ],
-    'sendedListSize' => 400,
+    'subreddits' => [
+        'https://www.reddit.com/r/Pikabu/hot/'
+    ],
+    'sendedListSize' => 500,
     'disableNotification' => true,
-    'maxMessagesOnSession' => 15
+    'maxMessagesOnSession' => 15,
+    'pages' => 1
 ];

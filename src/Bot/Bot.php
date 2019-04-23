@@ -21,7 +21,7 @@ class Bot
 
     public function run()
     {
-        (new GetPostsFromReddit())->handle();
+        (new GetPostsFromReddit($this->config))->handle();
         (new PrepareMessagesToSend())->handle();
         (new SendMessagesToTelegram($this->telegramService, $this->config))->handle();
         (new ClearCache())->handle();
