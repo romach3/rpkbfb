@@ -14,6 +14,8 @@ class LongTextFilter extends AbstractFilter
             $message['text'] .= PHP_EOL . PHP_EOL . '* продолжение на r/Pikabu *';
         }
         $message['text'] = str_replace("\n&amp;#x200B;\n", '', $message['text']);
+        $message['text'] = str_replace("&amp;#x200B;\n", '', $message['text']);
+        $message['text'] = str_replace("\n&amp;#x200B;", '', $message['text']);
 
         return ['message' => $message, 'item' => $item];
     }
