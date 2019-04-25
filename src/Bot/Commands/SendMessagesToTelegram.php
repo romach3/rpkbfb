@@ -79,14 +79,14 @@ class SendMessagesToTelegram
                     'parse_mode' => 'Markdown',
                     'disable_web_page_preview' => true,
                     'text' => "*{$message['title']}*" . PHP_EOL . PHP_EOL
-                        . $message['text'] . PHP_EOL . PHP_EOL
+                        . html_entity_decode($message['text']) . PHP_EOL . PHP_EOL
                         . $this->getMessageStatus($message)
                 ]);
             } catch (TelegramSDKException $exception) {
                 if (!$recursive) {
-                    $message['text'] = html_entity_decode(strip_tags(Parsedown::instance()
+                    $message['text'] = trim(html_entity_decode(strip_tags(Parsedown::instance()
                         ->setBreaksEnabled(true)
-                        ->parse($message['text'])));
+                        ->parse($message['text']))));
                     $this->send($message, true);
                 } else {
                     throw $exception;
@@ -138,7 +138,7 @@ class SendMessagesToTelegram
 
     protected function getMessageStatus(array $message): string
     {
-        return "⬆ ️{$message['score']} 📝 {$message['num_comments']} 🔗 [r/{$message['subreddit']}]({$message['link']}) 🔗 [{$message['author']}]({$message['author_url']})";
+        return "➕ ️{$message['score']} 🗯 {$message['num_comments']} 👤 [{$message['author']}]({$message['author_url']}) 🔗 [пост на r/{$message['subreddit']}]({$message['link']})";
     }
 
 }
