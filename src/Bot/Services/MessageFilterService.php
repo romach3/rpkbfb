@@ -55,7 +55,8 @@ class MessageFilterService
             'text' => $item['data']['selftext'],
             'hint' => $item['data']['post_hint'] ?? 'self',
             'url' => $item['data']['url'],
-            'nsfw' => $item['data']['over_18']
+            'nsfw' => $item['data']['over_18'],
+            'subreddit' => $item['data']['subreddit']
         ];
     }
 

@@ -35,7 +35,7 @@ class SendMessagesToTelegram
                         'parse_mode' => 'Markdown',
                         'disable_web_page_preview' => true,
                         'text' => "*{$message['title']}*" . PHP_EOL . PHP_EOL
-                            . 'Пост не отправился в TG, повод зайти на r/Pikabu )' . PHP_EOL . PHP_EOL
+                            . "Пост не отправился в TG, повод зайти на r/{$message['subreddit']} )" . PHP_EOL . PHP_EOL
                             . $this->getMessageStatus($message)
                     ]);
                     $counter++;
@@ -126,7 +126,7 @@ class SendMessagesToTelegram
 
     protected function getMessageStatus(array $message): string
     {
-        return "⬆ ️{$message['score']} 📝 {$message['num_comments']} 🔗 [r/Pikabu]({$message['link']}) 🔗 [{$message['author']}]({$message['author_url']})";
+        return "⬆ ️{$message['score']} 📝 {$message['num_comments']} 🔗 [r/{$message['subreddit']}]({$message['link']}) 🔗 [{$message['author']}]({$message['author_url']})";
     }
 
 }
