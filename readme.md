@@ -35,8 +35,11 @@
 
 ### Скучное
 
+* .env.example и config.example.php переименовать
+* Добавить в крон
 ```
 * * * * * cd /path/to/project && ./cron 1>> /dev/null 2>&1
 ```
 
-В .env нужно указать token бота и при необходимости - proxy url (см. доку к guzzlehttp)
+* В .env нужно указать token бота и при необходимости - proxy url (см. доку к guzzlehttp)
+* Поменять параметры в config.php

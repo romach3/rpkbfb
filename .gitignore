@@ -3,3 +3,4 @@ vendor/
 .env
 test
 src/Test.php
+config.php
