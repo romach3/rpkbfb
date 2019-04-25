@@ -3,6 +3,7 @@
 namespace App\Bot\Commands;
 
 use App\Bot\Services\TelegramService;
+use Parsedown;
 use Telegram\Bot\Exceptions\TelegramSDKException;
 
 class SendMessagesToTelegram
@@ -70,16 +71,27 @@ class SendMessagesToTelegram
         file_put_contents('./storage/sended.json', json_encode($ids));
     }
 
-    protected function send(array $message): void
+    protected function send(array $message, $recursive = false): void
     {
         if ($message['hint'] === 'self') {
-            $this->telegramService->sendMessage($message, [
-                'parse_mode' => 'Markdown',
-                'disable_web_page_preview' => true,
-                'text' => "*{$message['title']}*" . PHP_EOL . PHP_EOL
-                    . $message['text'] . PHP_EOL . PHP_EOL
-                    . $this->getMessageStatus($message)
-            ]);
+            try {
+                $this->telegramService->sendMessage($message, [
+                    'parse_mode' => 'Markdown',
+                    'disable_web_page_preview' => true,
+                    'text' => "*{$message['title']}*" . PHP_EOL . PHP_EOL
+                        . $message['text'] . PHP_EOL . PHP_EOL
+                        . $this->getMessageStatus($message)
+                ]);
+            } catch (TelegramSDKException $exception) {
+                if (!$recursive) {
+                    $message['text'] = html_entity_decode(strip_tags(Parsedown::instance()
+                        ->setBreaksEnabled(true)
+                        ->parse($message['text'])));
+                    $this->send($message, true);
+                } else {
+                    throw $exception;
+                }
+            }
         } else if ($message['hint'] === 'image') {
             $this->telegramService->sendPhoto($message, [
                 'photo' => $message['url'],
