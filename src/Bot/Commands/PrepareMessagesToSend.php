@@ -26,7 +26,7 @@ class PrepareMessagesToSend
     protected function getSendedPosts(): array
     {
         if (file_exists('./storage/sended.json')) {
-            return json_decode(file_get_contents('./storage/sended.json'), true);
+            return json_decode(file_get_contents('./storage/sended.json'), true) ?? [];
         }
 
         return [];

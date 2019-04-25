@@ -53,7 +53,7 @@ class SendMessagesToTelegram
     {
         $ids = [];
         if (file_exists('./storage/sended.json')) {
-            $ids = json_decode(file_get_contents('./storage/sended.json'), true);
+            $ids = json_decode(file_get_contents('./storage/sended.json'), true) ?? [];
         }
 
         return in_array($message['id'], $ids, true);
@@ -63,7 +63,7 @@ class SendMessagesToTelegram
     {
         $ids = [];
         if (file_exists('./storage/sended.json')) {
-            $ids = json_decode(file_get_contents('./storage/sended.json'), true);
+            $ids = json_decode(file_get_contents('./storage/sended.json'), true) ?? [];
         }
         $ids[] = $message['id'];
         $ids = array_slice($ids, -1 * $this->config['sendedListSize']);
