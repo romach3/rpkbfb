@@ -57,7 +57,7 @@ class SendMessagesToTelegram
             $ids = json_decode(file_get_contents('./storage/sended.json'), true) ?? [];
         }
 
-        return in_array($message['id'], $ids, true);
+        return isset($ids[$message['subreddit']]) && in_array($message['id'], $ids[$message['subreddit']], true);
     }
 
     protected function saveId(array $message): void
@@ -66,8 +66,11 @@ class SendMessagesToTelegram
         if (file_exists('./storage/sended.json')) {
             $ids = json_decode(file_get_contents('./storage/sended.json'), true) ?? [];
         }
-        $ids[] = $message['id'];
-        $ids = array_slice($ids, -1 * $this->config['sendedListSize']);
+        if (!isset($ids[$message['subreddit']])) {
+            $ids[$message['subreddit']] = [];
+        }
+        $ids[$message['subreddit']][] = $message['id'];
+        $ids[$message['subreddit']] = array_slice($ids[$message['subreddit']], -1 * $this->config['sendedListSize']);
         file_put_contents('./storage/sended.json', json_encode($ids));
     }
 

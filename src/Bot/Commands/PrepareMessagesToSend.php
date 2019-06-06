@@ -14,7 +14,10 @@ class PrepareMessagesToSend
         $sended = $this->getSendedPosts();
         $messagesFilter = new MessageFilterService();
         foreach ($items as $item) {
-            if (in_array($item['data']['id'], $sended, true)) {
+            if (!isset($sended[$item['data']['subreddit']])) {
+                $sended[$item['data']['subreddit']] = [];
+            }
+            if (in_array($item['data']['id'], $sended[$item['data']['subreddit']], true)) {
                 continue;
             }
             $message = $messagesFilter->getPreparedMessage($item);
