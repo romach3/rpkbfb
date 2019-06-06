@@ -17,6 +17,18 @@ abstract class AbstractFilter
         } elseif (is_array($this->type)) {
             return in_array($message['hint'], $this->type, true);
         }
+
+        return false;
+    }
+
+    protected function isExistTags(array $message, array $tags)
+    {
+        foreach ($tags as $tag) {
+            if (mb_strpos($message['title'], $tag) !== false) {
+                return true;
+            }
+        }
+
         return false;
     }
 

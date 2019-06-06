@@ -6,6 +6,7 @@ use App\Bot\Filters\AbstractFilter;
 use App\Bot\Filters\GifImageFilter;
 use App\Bot\Filters\HostedVideoFilter;
 use App\Bot\Filters\LongTextFilter;
+use App\Bot\Filters\MFilter;
 use App\Bot\Filters\NSFWThumbnailFilter;
 use App\Bot\Filters\PrimaryLinkFilter;
 use App\Bot\Filters\RichVideoFilter;
@@ -23,6 +24,7 @@ class MessageFilterService
             new GifImageFilter(),
             new HostedVideoFilter(),
             new RichVideoFilter(),
+            new MFilter()
         ];
     }
 

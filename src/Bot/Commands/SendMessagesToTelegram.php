@@ -133,6 +133,14 @@ class SendMessagesToTelegram
                     . '* Просмотр этого видео возможен только на Reddit *' . PHP_EOL . PHP_EOL
                     . $this->getMessageStatus($message)
             ]);
+        } else if ($message['hint'] === 'nsfw') {
+            $this->telegramService->sendMessage($message, [
+                'parse_mode' => 'Markdown',
+                'disable_web_page_preview' => true,
+                'text' => "*{$message['title']}*" . PHP_EOL . PHP_EOL
+                    . '* Просмотр этого поста возможен только на Reddit *' . PHP_EOL . PHP_EOL
+                    . $this->getMessageStatus($message)
+            ]);
         }
     }
 
