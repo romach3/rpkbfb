@@ -9,7 +9,7 @@ class MFilter extends AbstractFilter
 
     public function transform(array $message, array $item): array
     {
-        if ($this->isExistTags($message, ['[M]', '[М]'])) {
+        if ($this->isExistTags($message, ['[M]', '[М]', '[m]', '[м]'])) {
             $message['hint'] = 'nsfw';
         }
         return ['message' => $message, 'item' => $item];
