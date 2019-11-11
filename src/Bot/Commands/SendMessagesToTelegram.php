@@ -32,13 +32,18 @@ class SendMessagesToTelegram
                     echo $exception->getMessage() . PHP_EOL;
                     /* @todo log */
                     /* Ошибка возникает, при отправке слишком больших сообщений */
-                    $this->telegramService->sendMessage($message, [
-                        'parse_mode' => 'Markdown',
-                        'disable_web_page_preview' => true,
-                        'text' => "*{$message['title']}*" . PHP_EOL . PHP_EOL
-                            . "Пост не отправился в TG, повод зайти на r/{$message['subreddit']} )" . PHP_EOL . PHP_EOL
-                            . $this->getMessageStatus($message)
-                    ]);
+                    try {
+                        $this->telegramService->sendMessage($message, [
+                            'parse_mode' => 'Markdown',
+                            'disable_web_page_preview' => true,
+                            'text' => "*{$message['title']}*" . PHP_EOL . PHP_EOL
+                                . "Пост не отправился в TG, повод зайти на r/{$message['subreddit']} )" . PHP_EOL . PHP_EOL
+                                . $this->getMessageStatus($message)
+                        ]);
+                    } catch (\Exception $exception) {
+                        echo 'Critical Exception' . PHP_EOL;
+                        echo $exception->getMessage() . PHP_EOL;
+                    }
                     $counter++;
                 }
                 $this->saveId($message);
