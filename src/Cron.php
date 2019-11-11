@@ -17,7 +17,7 @@ try {
 
             return true;
         },
-        'schedule' => '*/5 * * * *',
+        'schedule' => '*/15 * * * *',
         'output' => 'storage/LoadNewPostsFromReddit.log',
     ]);
     $jobby->run();
