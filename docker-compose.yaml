@@ -1,0 +1,16 @@
+version: "2.0"
+services:
+  app:
+    container_name: rpikabufeed_bot
+    build: .
+    env_file: .env
+    volumes:
+      - ./:/app
+      - ./Dockerfile.supervisord.ini:/etc/supervisor/conf.d/supervisord.ini
+  composer:
+    container_name: rpikabufeed_bot_composer
+    restart: 'no'
+    image: composer/composer:latest
+    command: install
+    volumes:
+      - .:/app
